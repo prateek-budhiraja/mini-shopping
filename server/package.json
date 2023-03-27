@@ -1,0 +1,19 @@
+{
+  "name": "mini-shopping",
+  "version": "1.0.0",
+  "description": "A mini shopping site api",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prateek-budhiraja/mini-shopping.git"
+  },
+  "author": "Prateek Budhiraja",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prateek-budhiraja/mini-shopping/issues"
+  },
+  "homepage": "https://github.com/prateek-budhiraja/mini-shopping#readme"
+}
