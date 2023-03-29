@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { home } from "../controller/product.controller.js";
+import { addProduct, getProducts } from "../controller/product.controller.js";
+import { isAdmin, isLoggedIn } from "../middleware/auth.middleware.js";
 
 const router = Router();
 
-router.get("/", home);
+router.post("/add", isLoggedIn, isAdmin, addProduct);
+router.get("/", getProducts);
 
 export { router };

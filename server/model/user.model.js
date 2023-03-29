@@ -11,6 +11,7 @@ const userSchema = mongoose.Schema({
 	},
 	phone: {
 		type: Number,
+		unique: [true, "Phone number already exists"],
 		required: [true, "Phone number is required"],
 		minLength: [10, "Phone number must be 10 digits"],
 		maxLength: [10, "Phone number must be 10 digits"],
