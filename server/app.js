@@ -3,6 +3,7 @@ import dbConnect from "./config/dbConnection.js";
 import cookieParser from "cookie-parser";
 import { router as productRouter } from "./route/product.route.js";
 import { router as authRouter } from "./route/auth.route.js";
+import { router as orderRouter } from "./route/order.route.js";
 import cors from "cors";
 
 const app = express();
@@ -23,5 +24,6 @@ app.use(
 
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
+app.use("/api/order", orderRouter);
 
 export default app;
