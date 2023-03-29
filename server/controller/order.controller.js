@@ -11,7 +11,11 @@ export const addOrder = async (req, res) => {
 		});
 	}
 	try {
-		let total = orderItems.reduce((acc, item) => acc + item.price, 0);
+		let total = 0;
+		orderItems.forEach((product) => {
+			total += product.price * product.qty;
+		});
+
 		const order = await Order.create({
 			orderItems,
 			user: req.user._id,
