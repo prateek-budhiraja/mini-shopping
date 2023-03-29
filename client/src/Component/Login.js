@@ -1,7 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export const Login = () => {
+export const Login = ({ setUser }) => {
+	const navigate = useNavigate();
+	const [credentials, setCredentials] = useState("");
+	const [password, setPassword] = useState("");
+
+	const handleLogin = async (e) => {
+		e.preventDefault();
+		var response = null;
+
+		const phone = Number(credentials);
+		if (!isNaN(phone)) {
+			response = await axios.post("http://localhost:4000/api/auth/login", {
+				phone: phone,
+				password: password,
+			});
+		} else {
+			response = await axios.post("http://localhost:4000/api/auth/login", {
+				email: credentials,
+				password,
+			});
+		}
+		if (response.data?.success) {
+			setUser(response.data.user);
+			navigate("/");
+		}
+		setCredentials("");
+		setPassword("");
+	};
+
 	return (
 		<div className="flex items-center justify-center">
 			<div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
@@ -20,7 +50,7 @@ export const Login = () => {
 						</Link>
 					</p>
 
-					<form action="#" method="POST" className="mt-8">
+					<form onSubmit={handleLogin} method="POST" className="mt-8">
 						<div className="space-y-5">
 							<div>
 								<label
@@ -28,13 +58,15 @@ export const Login = () => {
 									className="text-base font-medium text-gray-900 "
 								>
 									{" "}
-									Email address{" "}
+									Email address / Phone Number{" "}
 								</label>
 								<div className="mt-2.5">
 									<input
 										className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent py-2 px-3 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-										type="email"
-										placeholder="Email"
+										type="text"
+										placeholder="Email / Phone"
+										value={credentials}
+										onChange={(e) => setCredentials(e.target.value)}
 									></input>
 								</div>
 							</div>
@@ -54,6 +86,8 @@ export const Login = () => {
 										className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent py-2 px-3 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 "
 										type="password"
 										placeholder="Password"
+										value={password}
+										onChange={(e) => setPassword(e.target.value)}
 									></input>
 								</div>
 							</div>

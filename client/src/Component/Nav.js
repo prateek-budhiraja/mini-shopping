@@ -1,6 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-export const Nav = ({ user }) => {
+import axios from "axios";
+
+export const Nav = ({ user, setUser }) => {
+	const handleSignout = async () => {
+		await axios.get("http://localhost:4000/api/auth/logout");
+		setUser(null);
+		window.location.reload();
+	};
+
 	return (
 		<nav className="px-10 py-5 bg-gray-800 text-xl text-white">
 			<div className="flex justify-between">
@@ -8,11 +16,14 @@ export const Nav = ({ user }) => {
 				<div className="flex gap-5">
 					{user ? (
 						<>
-							<span>Hi Username</span>
-							<Link to="/signout" className="text-red-400">
+							<span>Hi {user.name}</span>
+							<a
+								onClick={handleSignout}
+								className="text-red-400 cursor-pointer"
+							>
 								Signout
-							</Link>
-							<Link to="/cart">Cart</Link>
+							</a>
+							<Link to="/cart">Cart (0)</Link>
 						</>
 					) : (
 						<>

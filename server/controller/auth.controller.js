@@ -1,10 +1,5 @@
 import User from "../model/user.model.js";
-import AuthRole from "../util/authRole.js";
 import { options } from "../config/cookieOptions.js";
-
-export const home = (_req, res) => {
-	res.sendStatus(204); //no content
-};
 
 // signup
 // POST /api/auth/signup
@@ -40,14 +35,14 @@ export const login = async (req, res) => {
 			"+password"
 		);
 		if (!user) {
-			return res.status(404).json({
+			return res.status(403).json({
 				success: false,
 				error: "Invalid credentials",
 			});
 		}
 		const isPasswordMatched = await user.comparePassword(password);
 		if (!isPasswordMatched) {
-			return res.status(404).json({
+			return res.status(403).json({
 				success: false,
 				error: "Invalid credentials",
 			});

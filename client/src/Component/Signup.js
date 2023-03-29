@@ -1,7 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export const Signup = () => {
+	const [name, setName] = useState("");
+	const [email, setEmail] = useState("");
+	const [phone, setPhone] = useState("");
+	const [password, setPassword] = useState("");
+
+	const navigate = useNavigate();
+	const handleSignUp = async (e) => {
+		e.preventDefault();
+		const user = await axios.post("http://localhost:4000/api/auth/signup/", {
+			name,
+			email,
+			phone,
+			password,
+		});
+		if (user) {
+			navigate("/login");
+		}
+		setName("");
+		setEmail("");
+		setPhone("");
+		setPassword("");
+	};
+
 	return (
 		<div className="flex items-center justify-center">
 			<div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
@@ -19,7 +44,7 @@ export const Signup = () => {
 						</Link>
 					</p>
 
-					<form action="#" method="POST" className="mt-8">
+					<form onSubmit={handleSignUp} className="mt-8">
 						<div className="space-y-5">
 							<div>
 								<label
@@ -35,6 +60,8 @@ export const Signup = () => {
 										type="text"
 										placeholder="Enter You Full Name"
 										id="name"
+										value={name}
+										onChange={(e) => setName(e.target.value)}
 									></input>
 								</div>
 							</div>
@@ -53,6 +80,8 @@ export const Signup = () => {
 										type="email"
 										placeholder="Enter Your Email"
 										id="email"
+										value={email}
+										onChange={(e) => setEmail(e.target.value)}
 									></input>
 								</div>
 							</div>
@@ -71,6 +100,8 @@ export const Signup = () => {
 										type="phone"
 										placeholder="Enter Your Phone no"
 										id="phone"
+										value={phone}
+										onChange={(e) => setPhone(e.target.value)}
 									></input>
 								</div>
 							</div>
@@ -89,6 +120,8 @@ export const Signup = () => {
 										type="password"
 										placeholder="Enter Your Password"
 										id="password"
+										value={password}
+										onChange={(e) => setPassword(e.target.value)}
 									></input>
 								</div>
 							</div>
