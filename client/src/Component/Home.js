@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Product } from "./Product";
 import axios from "axios";
 
-const Home = () => {
+const Home = ({ setCartProducts, user }) => {
 	const [products, setProducts] = useState([]);
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -16,7 +16,11 @@ const Home = () => {
 	return (
 		<>
 			<div className="font-semibold text-4xl text-center mt-8">PRODUCTS</div>
-			<Product products={products} />
+			<Product
+				user={user}
+				products={products}
+				setCartProducts={setCartProducts}
+			/>
 		</>
 	);
 };

@@ -1,11 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export const Cart = ({ cartProducts }) => {
+export const Cart = ({ cartProducts, setCartProducts }) => {
+	const [total, setTotal] = useState(0);
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		let total = 0;
+		cartProducts.forEach((product) => {
+			total += product.sellingPrice * product.qty;
+		});
+		setTotal(total);
+	}, [cartProducts]);
+
+	const handleRemoveCart = (id) => {
+		const newCartProducts = cartProducts.filter(
+			(product) => product._id !== id
+		);
+		setCartProducts(newCartProducts);
+	};
+
+	const handleOrder = async () => {
+		const orderItems = cartProducts.map((product) => {
+			return {
+				name: product.name,
+				qty: product.qty,
+				image: product.imageSrc,
+				price: product.sellingPrice,
+			};
+		});
+		console.log(orderItems);
+		const { data } = await axios.post("http://localhost:4000/api/order", {
+			orderItems,
+			isPaid: false,
+		});
+		if (data.success) {
+			setCartProducts([]);
+			navigate("/checkout");
+		}
+	};
+
 	return (
 		<div className="flex flex-col mx-auto max-w-3xl p-6 space-y-4 sm:p-10">
 			<h2 className="text-xl font-semibold">Your cart</h2>
 			<ul className="flex flex-col divide-y divide-gray-700">
-				{cartProducts.map((product) => (
+				{cartProducts?.map((product) => (
 					<li
 						key={product._id}
 						className="flex flex-col py-6 sm:flex-row sm:justify-between"
@@ -22,16 +62,19 @@ export const Cart = ({ cartProducts }) => {
 										<h3 className="text-lg font-semibold leading-snug sm:pr-8">
 											{product.name}
 										</h3>
-										<p className="text-sm">{product.color}</p>
+										<p className="text-sm">Quantity: {product.qty}</p>
 									</div>
 									<div className="text-right">
-										<p className="text-lg font-semibold">{product.price}</p>
+										<p className="text-lg font-semibold">
+											₹ {product.sellingPrice}
+										</p>
 									</div>
 								</div>
 								<div className="flex text-sm divide-x">
 									<button
 										type="button"
 										className="flex items-center px-2 py-1 pl-0 space-x-1"
+										onClick={() => handleRemoveCart(product._id)}
 									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
@@ -55,16 +98,23 @@ export const Cart = ({ cartProducts }) => {
 			<div className="space-y-1 text-right">
 				<p>
 					Total amount:
-					<span className="font-semibold"> ₹48,967</span>
+					<span className="font-semibold"> ₹ {total}</span>
 				</p>
 			</div>
 			<div className="flex justify-end space-x-4">
-				<button type="button" className="px-6 py-2 border rounded-md">
-					Back
-					<span className="sr-only sm:not-sr-only"> to shop</span>
+				<button
+					onClick={() => navigate("/")}
+					type="button"
+					className="px-6 py-2 border rounded-md"
+				>
+					Back to shop
 				</button>
-				<button type="button" className="px-6 py-2 border rounded-md">
-					<span className="sr-only sm:not-sr-only">Continue to</span> Checkout
+				<button
+					onClick={handleOrder}
+					type="button"
+					className="px-6 py-2 border rounded-md"
+				>
+					Order
 				</button>
 			</div>
 		</div>

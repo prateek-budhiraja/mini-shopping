@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-export const Nav = ({ user, setUser }) => {
+export const Nav = ({ user, setUser, cart }) => {
 	const handleSignout = async () => {
 		await axios.get("http://localhost:4000/api/auth/logout");
 		setUser(null);
@@ -17,13 +17,20 @@ export const Nav = ({ user, setUser }) => {
 					{user ? (
 						<>
 							<span>Hi {user.name}</span>
+							{user.role === "ADMIN" ? (
+								<Link to="/admin" className="text-blue-400">
+									Add Product
+								</Link>
+							) : (
+								""
+							)}
 							<a
 								onClick={handleSignout}
 								className="text-red-400 cursor-pointer"
 							>
 								Signout
 							</a>
-							<Link to="/cart">Cart (0)</Link>
+							<Link to="/cart">Cart ({cart})</Link>
 						</>
 					) : (
 						<>

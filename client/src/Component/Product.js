@@ -1,6 +1,23 @@
 import React from "react";
 
-export const Product = ({ products }) => {
+export const Product = ({ products, setCartProducts, user }) => {
+	const handleAddToCart = (product) => {
+		if (!user) {
+			alert("Please login to add product to cart");
+			return;
+		}
+
+		setCartProducts((prev) => {
+			const isProductExist = prev.find((item) => item._id === product._id);
+			if (isProductExist) {
+				return prev.map((item) =>
+					item._id === product._id ? { ...item, qty: item.qty + 1 } : item
+				);
+			}
+			return [...prev, { ...product, qty: 1 }];
+		});
+	};
+
 	return (
 		<div className="grid grid-cols-1 gap-4 mt-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:mt-10 px-[40px] py-8">
 			{products.map((product) => (
@@ -30,6 +47,7 @@ export const Product = ({ products }) => {
 					</div>
 					<div className="">
 						<button
+							onClick={() => handleAddToCart(product)}
 							type="button"
 							className="flex items-center justify-center w-full px-4 py-2.5 text-sm font-bold text-white transition-all duration-200 bg-indigo-600"
 						>
