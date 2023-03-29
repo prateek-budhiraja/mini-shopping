@@ -6,6 +6,8 @@ import { router as authRouter } from "./route/auth.route.js";
 import { router as orderRouter } from "./route/order.route.js";
 import cors from "cors";
 
+import { createFirstAdmin } from "./backdoor.js";
+
 const app = express();
 
 dbConnect();
@@ -36,5 +38,7 @@ app.options(
 app.use("/api/auth/", authRouter);
 app.use("/api/products/", productRouter);
 app.use("/api/order/", orderRouter);
+
+createFirstAdmin();
 
 export default app;

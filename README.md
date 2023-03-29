@@ -22,3 +22,11 @@ JWT_SECRET=secure&lOnGPasswoRd
 
 - Start the server by running npm start in the server directory.
 - Start the client by running npm start in the client directory.
+
+> Admin account:
+
+> Email: admin@admin.com
+
+> Phone: 1234567890
+
+> Password: admin
