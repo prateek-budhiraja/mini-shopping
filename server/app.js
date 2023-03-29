@@ -19,11 +19,22 @@ app.use(
 		origin: "http://localhost:3000",
 		methods: "GET,PATCH,POST,DELETE",
 		credentials: true,
+		allowedHeaders: ["Content-Type", "Authorization"],
 	})
 );
 
-app.use("/api/auth", authRouter);
-app.use("/api/products", productRouter);
-app.use("/api/order", orderRouter);
+app.options(
+	"*",
+	cors({
+		origin: "http://localhost:3000",
+		methods: "GET,PATCH,POST,DELETE",
+		credentials: true,
+		allowedHeaders: ["Content-Type", "Authorization"],
+	})
+);
+
+app.use("/api/auth/", authRouter);
+app.use("/api/products/", productRouter);
+app.use("/api/order/", orderRouter);
 
 export default app;
